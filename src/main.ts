@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import program from 'commander';
-import axios from "axios"; 
+import axios, { AxiosResponse } from "axios"; 
 
 
-interface ServerResponse {
-  data: ServerData
+interface ServerResponse<T> {
+  data: T
 }
 interface Headers {
     'Accept'?: string;
@@ -47,11 +47,11 @@ interface ServerData {
         .option("-d, --ddd", "DDD")
         .action(async (v, cmdObj) => {
             console.log("cm1", v, cmdObj.ccc, cmdObj.ddd);
-            const res: ServerResponse = await axios.request<void, ServerResponse>({
+            const res: AxiosResponse<ServerData> = await axios.request<ServerData, AxiosResponse>({
                 method: 'get',
                 url: 'https://httpbin.org/get',
             });
-            console.log(res.data);
+            console.log("headers", res.data.headers);
         })
 
     console.log('start!')
